@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Créer une campagne{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Créer une campagne</h1>
+
+    <!-- Formulaire pour créer une campagne -->
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Nom de la campagne :</label>
+            <input type="text" id="name" name="name" placeholder="Nom de la campagne" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" placeholder="Description de la campagne"></textarea>
+        </div>
+        <button type="submit" class="btn">Créer la campagne</button>
+    </form>
+</div>
+{% endblock %}

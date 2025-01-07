@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Simuler un phishing{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Simuler un phishing</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="campaign_id">Campagne :</label>
+            <select id="campaign_id" name="campaign_id" required>
+                {% for campaign in campaigns %}
+                <option value="{{ campaign.id }}">{{ campaign.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="contact_type">Type de contact :</label>
+            <select id="contact_type" name="contact_type" required>
+                <option value="email">Email</option>
+                <option value="phone">Téléphone</option>
+            </select>
+        </div>
+        <div class="form-group" id="email_selection" style="display: block;">
+            <label for="email_contact_id">Email :</label>
+            <select id="email_contact_id" name="email_contact_id">
+                {% for contact in contacts %}
+                {% if contact.email %}
+                <option value="{{ contact.id }}">{{ contact.name }} - {{ contact.email }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group" id="phone_selection" style="display: none;">
+            <label for="phone_contact_id">Téléphone :</label>
+            <select id="phone_contact_id" name="phone_contact_id">
+                {% for contact in contacts %}
+                {% if contact.phone %}
+                <option value="{{ contact.id }}">{{ contact.name }} - {{ contact.phone }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="api_id">API à utiliser :</label>
+            <select id="api_id" name="api_id">
+                <option value="">Utiliser Flask-Mail</option>
+                {% for api in apis %}
+                <option value="{{ api.id }}">{{ api.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit">Envoyer</button>
+    </form>
+
+    {% if success %}
+    <p style="color: green;">Simulation envoyée avec succès !</p>
+    {% endif %}
+</div>
+
+<script>
+    document.getElementById('contact_type').addEventListener('change', function () {
+        const contactType = this.value;
+        const emailSelection = document.getElementById('email_selection');
+        const phoneSelection = document.getElementById('phone_selection');
+
+        if (contactType === 'email') {
+            emailSelection.style.display = 'block';
+            phoneSelection.style.display = 'none';
+        } else if (contactType === 'phone') {
+            emailSelection.style.display = 'none';
+            phoneSelection.style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}

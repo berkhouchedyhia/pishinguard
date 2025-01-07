@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Liste des campagnes -->
+    <div class="dashboard-section" id="campaigns-section">
+        <h2>Campagnes</h2>
+        <ul>
+            {% for campaign in campaigns %}
+            <li class="dashboard-item">
+                <span class="campaign-name" data-id="{{ campaign.id }}">{{ campaign.name }}</span>
+                <div class="dashboard-actions">
+                    <form method="POST" action="{{ url_for('delete_campaign', campaign_id=campaign.id) }}" style="display:inline;">
+                        <button type="submit" style="color:red; background:none; border:none; cursor:pointer;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                    <button class="edit-btn" data-id="{{ campaign.id }}" style="color:blue; background:none; border:none; cursor:pointer;">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('dashboard') }}" class="edit-form" data-id="{{ campaign.id }}" style="display:none;">
+                    <input type="hidden" name="campaign_id" value="{{ campaign.id }}">
+                    <textarea name="name" placeholder="Nom" required>{{ campaign.name }}</textarea>
+                    <textarea name="description" placeholder="Description">{{ campaign.description }}</textarea>
+                    <button type="submit" class="btn">Enregistrer</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Liste des contacts -->
+    <div class="dashboard-section">
+        <h2>Contacts</h2>
+        <ul>
+            {% for contact in contacts %}
+            <li class="dashboard-item">
+                <span class="contact-name" data-id="{{ contact.id }}">{{ contact.name }}</span>
+                <div class="dashboard-actions">
+                    <form method="POST" action="{{ url_for('delete_contact', contact_id=contact.id) }}" style="display:inline;">
+                        <button type="submit" style="color:red; background:none; border:none; cursor:pointer;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                    <button class="edit-btn" data-id="{{ contact.id }}" style="color:blue; background:none; border:none; cursor:pointer;">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('dashboard') }}" class="edit-form" data-id="{{ contact.id }}" style="display:none;">
+                    <input type="hidden" name="contact_id" value="{{ contact.id }}">
+                    <textarea name="name" placeholder="Nom" required>{{ contact.name }}</textarea>
+                    <textarea name="email" placeholder="E-mail" required>{{ contact.email }}</textarea>
+                    <textarea name="phone" placeholder="Téléphone">{{ contact.phone }}</textarea>
+                    <button type="submit" class="btn">Enregistrer</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Liste des API -->
+    <div class="dashboard-section">
+        <h2>API</h2>
+        <ul>
+            {% for api in apis %}
+            <li class="dashboard-item">
+                <span class="api-name" data-id="{{ api.id }}">{{ api.name }} - {{ api.api_type }}</span>
+                <div class="dashboard-actions">
+                    <form method="POST" action="{{ url_for('delete_api', api_id=api.id) }}" style="display:inline;">
+                        <button type="submit" style="color:red; background:none; border:none; cursor:pointer;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+// Script pour afficher les formulaires de modification
+document.addEventListener('DOMContentLoaded', function() {
+    var editButtons = document.querySelectorAll('.edit-btn');
+
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var form = document.querySelector('.edit-form[data-id="' + id + '"]');
+            var displayContent = this.closest('.dashboard-item').querySelector('.campaign-name, .contact-name');
+            var section = form.closest('.dashboard-section');
+
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                displayContent.style.display = 'none';
+                autoResizeTextareas(form);
+                if (section.id === 'campaigns-section') {
+                    section.classList.add('campaign-editing'); // Ajouter la classe "campaign-editing" pour agrandir la section des campagnes
+                }
+            } else {
+                form.style.display = 'none';
+                displayContent.style.display = 'block';
+                if (section.id === 'campaigns-section') {
+                    section.classList.remove('campaign-editing'); // Enlever la classe "campaign-editing" pour remettre la section des campagnes à sa taille d'origine
+                }
+            }
+        });
+    });
+});
+
+function autoResizeTextareas(form) {
+    var textareas = form.querySelectorAll('textarea');
+    textareas.forEach(function(textarea) {
+        textarea.style.height = 'auto'; // Réinitialiser la hauteur pour obtenir la hauteur de défilement réelle
+        textarea.style.height = textarea.scrollHeight + 'px'; // Ajuster la hauteur en fonction du contenu
+        textarea.addEventListener('input', function() {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        });
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,508 @@
+/* Variables pour les couleurs */
+:root {
+    --primary-color: #5865F2; /* Bleu principal */
+    --secondary-color: #23272A; /* Fond général */
+    --text-color: #ffffff; /* Texte principal */
+    --input-bg: #2C2F33; /* Fond des champs */
+    --btn-hover: #7289DA; /* Couleur de survol */
+    --border-color: #4F545C; /* Bordures */
+    --hover-bg-color: #23272A; /* Couleur de fond au survol (noir) */
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Réinitialisation de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+body {
+    padding-top: 4rem; /* Ajoute un remplissage en haut pour éviter que le contenu soit caché derrière la barre de navigation */
+    background: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.6;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    flex-direction: column; /* Assurer une direction verticale */
+}
+main {
+    flex: 0; /* Permet au contenu de remplir l'espace restant */
+    padding-top: 50px; /* Ajustez selon la hauteur de la navbar */
+    padding-bottom: 50px; /* Ajustez selon la hauteur de la barre inférieure */
+}
+.container-wrapper {
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    height: 100%;
+    width: 100%;
+}
+
+/* Navigation */
+.navbar {
+    background: var(--primary-color);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: fixed; /* Fixe la barre de navigation en haut */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Assure que la barre reste au-dessus des autres éléments */
+    transition: all 0.3s ease; /* Pour des transitions fluides */
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.navbar .logo .nav-logo {
+    width: 40px; /* Ajuste la taille du logo selon tes préférences */
+    height: auto;
+    margin-right: 10px; /* Espace entre le logo et le texte */
+}
+
+.navbar .nav-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+}
+
+.navbar .nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 10px 20px; /* Ajoute un padding pour l'effet de boîte */
+    background-color: rgba(255, 255, 255, 0.1); /* Fond noir avec transparence */
+    border-radius: 8px; /* Bordures arrondies */
+}
+
+.navbar .nav-links a:hover {
+    background-color: var(--hover-bg-color); /* Changer la couleur de fond au survol */
+    transform: translateY(-10px); /* Effet de déplacement */
+}
+
+/* Responsive Navigation */
+.navbar .menu-toggle {
+    display: none; /* Masque le bouton burger par défaut */
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+/* Petits écrans */
+/* Petits écrans */
+@media (max-width: 768px) {
+    .navbar .nav-links {
+        display: none; /* Cache les liens au départ */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--primary-color);
+        padding: 1rem;
+        width: 100%;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .navbar .menu-toggle.active + .nav-links {
+        display: flex; /* Affiche les liens lors de l'activation */
+    }
+}
+
+
+/* Grands écrans */
+@media (min-width: 769px) {
+    .navbar .nav-links {
+        display: flex; /* Affiche les liens en ligne */
+    }
+}
+/* Mobile Navigation Bar */
+.mobile-nav {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--primary-color);
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 0.5rem 0;
+    justify-content: space-around; /* Distribution uniforme des boutons */
+    align-items: center;
+}
+
+.mobile-nav .nav-btn {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Espace entre l'icône et le texte */
+}
+
+.mobile-nav .nav-btn i {
+    font-size: 1.2rem; /* Taille de l'icône */
+}
+
+@media (max-width: 768px) {
+    .mobile-nav {
+        display: flex; /* Affiche uniquement pour les petits écrans */
+    }
+}
+
+
+.mobile-nav .nav-btn:hover {
+    color: var(--hover-bg-color);
+    transform: translateY(-3px);
+}
+
+
+
+/* Afficher la navigation mobile uniquement sur téléphone */
+@media (max-width: 768px) {
+    .mobile-nav {
+        display: flex;
+    }
+
+    .navbar .nav-links {
+        display: none; /* Cache la barre de navigation classique */
+    }
+}
+
+
+/* Contenu principal */
+.container {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrer verticalement */
+    align-items: center; /* Centrer horizontalement */
+    gap: 1rem;
+    max-width: 500px;
+    width: 100%; /* Assurer une largeur fixe pour une meilleure mise en page */
+    background: var(--input-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+/* Formulaire */
+.form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    background: var(--input-bg);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(88, 101, 242, 0.5);
+}
+
+/* Boutons */
+button {
+    background: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 1rem;
+}
+
+button:hover {
+    background: var(--btn-hover);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+a {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+a:hover {
+    color: var(--btn-hover);
+}
+
+/* Messages d'erreur */
+.error-message {
+    color: #ff4d4d;
+    background: #ffe6e6;
+    border: 1px solid #ff4d4d;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+/* Styles pour le tableau de bord */
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap; /* Permet aux sections de s'ajuster sur plusieurs lignes si nécessaire */
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.dashboard-section {
+    flex: 1 1 calc(100% - 4rem); /* La section occupe toute la largeur par défaut avec un espace entre */
+    background: var(--input-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: auto; /* Ajuste la hauteur en fonction du contenu */
+    width: 300px;
+    max-height: 350px; /* Limite la hauteur maximale */
+    overflow-y: auto; /* Ajoute une barre de défilement verticale si nécessaire */
+    transition: all 0.3s ease; /* Animation pour un effet fluide */
+    margin-top: 70px;
+}
+
+.dashboard-section.campaign-editing {
+    flex: 1 1 100%; /* Occupe toute la largeur disponible lors de l'édition */
+}
+
+.dashboard-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+/* Media Queries pour la responsivité */
+@media (min-width: 768px) {
+    .dashboard-section {
+        flex: 1 1 calc(50% - 2rem); /* Deux sections par ligne pour les écrans moyens */
+        max-width: 600px;
+    }
+
+    .dashboard-section.campaign-editing {
+        flex: 1 1 100%; /* Reste pleine largeur si nécessaire */
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-section {
+        flex: 1 1 calc(33.33% - 2rem); /* Trois sections par ligne pour les grands écrans */
+        max-width: 450px;
+    }
+
+    .dashboard-section.campaign-editing {
+        flex: 1 1 calc(66.66% - 2rem); /* Prend deux tiers de la largeur */
+    }
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.edit-form textarea {
+    width: 100%;
+    height: 80px; /* Hauteur initiale des zones de texte */
+    resize: none;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    transition: height 0.3s ease; /* Animation pour un effet fluide */
+}
+
+.edit-form .btn {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-form .btn:hover {
+    background: var(--btn-hover);
+}
+/* Container principal */
+.analytics-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem 1.4rem;
+    padding-top: 6rem; /* Compense la hauteur de la barre de navigation */
+    background: var(--secondary-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* Titre */
+.analytics-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+/* Barre de recherche */
+.search-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-bar input,
+.search-bar select {
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+/* Tableau */
+.analytics-table {
+    width: 100%;
+    max-width: 1000px; /* Limite la largeur maximale */
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: var(--text-color);
+    text-align: left;
+}
+
+.analytics-table th,
+.analytics-table td {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.analytics-table th {
+    background: var(--table-header-bg);
+    color: var(--text-color);
+}
+
+.analytics-table tr:hover {
+    background: var(--table-row-hover);
+}
+
+/* Rendre le tableau plus agréable */
+.table {
+    margin-top: 1rem;
+    background-color: #2c2f33;
+    color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #5865F2; /* Couleur de l'en-tête */
+    color: #ffffff;
+    z-index: 150;
+}
+
+/* Pagination centrée */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid #5865F2;
+    background-color: #ffffff;
+    color: #5865F2;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #5865F2;
+    color: #ffffff;
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}

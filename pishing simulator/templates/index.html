@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Phishing Simulator</h1>
+    <p>This platform helps you simulate phishing attacks to educate your employees.</p>
+    <a class="btn" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+</div>
+{% endblock %}

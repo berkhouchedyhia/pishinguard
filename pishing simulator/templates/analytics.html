@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="container analytics-container">
+    <h1 class="text-center mb-4">Tableau de bord Analytics</h1>
+
+    <!-- Barre de recherche -->
+    <div class="search-bar d-flex gap-3 my-4">
+        <input type="text" id="search-name" placeholder="Rechercher par nom" class="form-control w-50">
+        <select id="search-action" class="form-select w-25">
+            <option value="">Toutes les actions</option>
+            <option value="email_sent">Emails Envoyés</option>
+            <option value="clicked">Liens Cliqués</option>
+        </select>
+    </div>
+
+    <!-- Tableau des interactions -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark" style="position: sticky; top: 0; z-index: 100;">
+                <tr>
+                    <th>Campagne</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="interaction-table-body">
+                {% for interaction in interactions %}
+                <tr>
+                    <td data-campaign-name="{% for campaign in campaigns %}{% if campaign.id == interaction.campaign_id %}{{ campaign.name }}{% endif %}{% endfor %}">
+                        {% for campaign in campaigns %}
+                            {% if campaign.id == interaction.campaign_id %}
+                                {{ campaign.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td data-contact-name="{% for contact in contacts %}{% if contact.id == interaction.contact_id %}{{ contact.name }}{% endif %}{% endfor %}">
+                        {% for contact in contacts %}
+                            {% if contact.id == interaction.contact_id %}
+                                {{ contact.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td data-action="{{ interaction.action }}">{{ interaction.action }}</td>
+                    <td>{{ interaction.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination text-center mt-4">
+        <button id="prev-page" class="btn btn-outline-primary" disabled>Précédent</button>
+        <button id="next-page" class="btn btn-outline-primary">Suivant</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const rowsPerPage = 15;
+    let currentPage = 1;
+
+    const tableBody = document.getElementById('interaction-table-body');
+    const allRows = Array.from(tableBody.querySelectorAll('tr'));
+    const searchName = document.getElementById('search-name');
+    const searchAction = document.getElementById('search-action');
+
+    let filteredRows = [...allRows]; // Rows to display after filtering
+
+    function filterRows() {
+        const filterName = searchName.value.toLowerCase();
+        const filterAction = searchAction.value;
+
+        filteredRows = allRows.filter(row => {
+            const contactName = row.querySelector('[data-contact-name]').getAttribute('data-contact-name').toLowerCase();
+            const action = row.querySelector('[data-action]').getAttribute('data-action');
+
+            return (
+                (filterName === '' || contactName.includes(filterName)) &&
+                (filterAction === '' || action === filterAction)
+            );
+        });
+
+        currentPage = 1; // Reset to the first page after filtering
+        updateTable();
+    }
+
+    function updateTable() {
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = currentPage * rowsPerPage;
+
+        allRows.forEach(row => row.style.display = 'none'); // Hide all rows
+        filteredRows.slice(startIndex, endIndex).forEach(row => row.style.display = ''); // Show paginated rows
+
+        document.getElementById('prev-page').disabled = currentPage === 1;
+        document.getElementById('next-page').disabled = currentPage === Math.ceil(filteredRows.length / rowsPerPage);
+    }
+
+    document.getElementById('prev-page').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            updateTable();
+        }
+    });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+        if (currentPage < Math.ceil(filteredRows.length / rowsPerPage)) {
+            currentPage++;
+            updateTable();
+        }
+    });
+
+    searchName.addEventListener('input', filterRows);
+    searchAction.addEventListener('change', filterRows);
+
+    filterRows(); // Initialize table display
+});
+</script>
+{% endblock %}
